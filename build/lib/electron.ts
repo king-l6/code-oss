@@ -137,6 +137,10 @@ const githubAssetResolver = async ({ url, fileName }: { url: string; fileName: s
 	if (fileName === 'SHASUMS256.txt') {
 		return new Response(await fs.promises.readFile(electronChecksumFile));
 	}
+	const mirror = process.env['ELECTRON_MIRROR'];
+	if (mirror) {
+		return fetch(`${mirror}${electronVersion}/${fileName}`);
+	}
 	return fetch(url);
 };
 
